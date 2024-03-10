@@ -38,7 +38,7 @@ export function Players({ name, setWinner, setWinnerName }) {
             <h3>{name}</h3>
             <aside className="flex gap-x-3">
                 <div className="text-center flex items-center">
-                    <p className="p-2 flex items-center"><img src="./public/level-logo.png" alt="Imagen que representa el nivel" className="h-[65px] p-2" />: {level}</p>
+                    <p className="p-2 flex items-center"><img src="level-logo.png" alt="Imagen que representa el nivel" className="h-[65px] p-2" />: {level}</p>
                     <div className="text-sm flex flex-col-reverse gap-2">
                         <button onClick={() => handleLevelDown()}>↓</button>
                         <button onClick={() => handleLevelUp()}>↑</button>
@@ -46,13 +46,13 @@ export function Players({ name, setWinner, setWinnerName }) {
                 </div>
 
                 <div className="text-center flex items-center p-[0_2rem]">
-                    <p className="p-2 flex items-center"><img src="./public//mochila.png" alt="" className="h-[65px] p-2" />: {object}</p>
+                    <p className="p-2 flex items-center"><img src="mochila.png" alt="" className="h-[65px] p-2" />: {object}</p>
                     <div className="text-sm flex flex-col-reverse gap-2">
                         <button onClick={() => handleObjectDown()}>↓</button>
                         <button onClick={() => handleObjectUp()}>↑</button>
                     </div>
                 </div>
-                <span className="flex items-center text-4xl"><img src="./public/dano-logo.png" alt="" className="h-[65px] p-2" />: {total}</span>
+                <span className="flex items-center text-4xl"><img src="dano-logo.png" alt="" className="h-[65px] p-2" />: {total}</span>
             </aside>
 
         </div>
