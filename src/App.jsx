@@ -1,34 +1,57 @@
 
-import { useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { Players } from "./components/Player"
 import { users } from "./data/players.json"
+import { CounterContext } from "./context/counterContext"
 
 
 function App() {
-  
+
+  const { Munchkin, setMunchkin, initialObject, setInitialObject } = useContext(CounterContext)
+
   const [winner, setWinner] = useState(false)
   const [winnerName, setWinnerName] = useState(null)
 
-  console.log(users)
+
+  const restartGame = () => {
+    setMunchkin(Munchkin === 0 ? 1 : 0)
+    setInitialObject(true)
+    setWinner(false)
+    console.log(Munchkin)
+  }
+
+  useEffect(() => {
+    if (Munchkin === 10) {
+      setWinner(!winner)
+    }
+    else { 
+      setWinner(false) 
+      setInitialObject(!winner)
+    }
+  }, [Munchkin, setMunchkin, initialObject])
+
 
   return (
-    <div className="relative">
-      <h1 className="text-center p-6">Super Munchkin Counter</h1>
-      <section>
-        <h2 className="text-4xl p-5">Munchkins</h2>
-        {winner 
-          ? 
-            <div className="absolute left-[15vw] w-[800px] h-[300px] bg-[#00000068] text-center p-[1rem_2rem_5rem] border border-black">
-              <h1 className="p-[3rem]">El ganador es </h1>
-              <span className=" font-bold text-3xl">{winnerName}</span>
+    <div className="relative w-full h-full">
+      <h1 className="text-center p-6 max-[665px]:text-2xl max-[665px]:text-left">Super Munchkin Counter</h1>
+      <section >
+        <h2 className="p-5 max-[665px]:text-sm max-[665px]:p-[0_2rem] text-xl">Munchkins</h2>
+        <div >
+          {winner
+            ?
+            <div className="absolute left-[15vw] w-[800px] h-[300px] bg-[#00000068] text-center p-[1rem_2rem_5rem] border z-50 border-black  max-[665px]:w-[400px] max-[665px]:h-[max-content] max-[665px]:[1rem] rounded-xl backdrop-blur-xl">
+
+              <h1 className="p-[3rem] max-[665px]:text-4xl">El ganador es </h1>
+              <span className=" font-bold text-3xl max-[665px]:text6xl">{winnerName}</span>
+
             </div>
-          : ""
-        }
-        {users.map((user, index) => (
-          <Players name={user.name} key={index} setWinner={setWinner} setWinnerName={setWinnerName}/>
-        ))}
-        
-        <button className=" absolute right-10 bottom-[-7rem] text-3xl" onClick={()=> location.reload()}>Restart</button>
+            : ""
+          }
+          {users.map((user, index) => (
+            <Players name={user.name} key={index} setWinner={setWinner} setWinnerName={setWinnerName} winner={winner}/>
+          ))}
+        </div>
+        <button className=" absolute right-10 bottom-[-5rem] text-3xl max-[665px]:bottom-[20rem]" onClick={() => restartGame()}>⟲</button>
       </section>
     </div>
   )
