@@ -33,7 +33,7 @@ function App() {
 
   return (
     <div className="relative w-full h-full">
-      <h1 className="text-center p-6 max-[665px]:text-2xl max-[665px]:text-left">Super Munchkin Counter</h1>
+      <h1 className="text-center p-6 max-[665px]:text-2xl max-[665px]:text-left max-[665px]:w-[250px] ">Super Munchkin Counter</h1>
       <section >
         <h2 className="p-5 max-[665px]:text-sm max-[665px]:p-[0_2rem] text-xl">Munchkins</h2>
         <div >
@@ -51,7 +51,7 @@ function App() {
             <Players name={user.name} key={index} setWinner={setWinner} setWinnerName={setWinnerName} winner={winner}/>
           ))}
         </div>
-        <button className=" absolute right-10 bottom-[-5rem] text-3xl max-[665px]:bottom-[20rem]" onClick={() => restartGame()}>⟲</button>
+        <button className=" absolute right-10 bottom-[-5rem] text-3xl max-[665px]:bottom-[20rem] max-[665px]:bg-[#1a1a1a38]" onClick={() => restartGame()}>⟲</button>
       </section>
     </div>
   )
