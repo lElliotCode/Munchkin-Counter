@@ -4,7 +4,7 @@ import { CounterContext } from "../context/counterContext"
 
 export function Players({ name, setWinnerName }) {
 
-    const { Munchkin, setMunchkin, initialObject, setInitialObject } = useContext(CounterContext);
+    const { Munchkin, setMunchkin, initialObject } = useContext(CounterContext);
 
     const [level, setLevel] = useState(1)
     const [object, setObject] = useState(0)
@@ -34,8 +34,23 @@ export function Players({ name, setWinnerName }) {
             setMunchkin(10)
             setWinnerName(name)
         }
-        setTotal(level + object)
+        
+        setTotal((parseInt(level) > 0 ? parseInt(level) : 1) + (parseInt(object) > 0 ? parseInt(object) : 0))
     }, [level, object])
+
+    const handleObjectChange = (e) =>{
+        let newValue = e.target.value
+        if (newValue < 0) {newValue = 0}    
+        if (newValue > 99) {newValue = 99}
+        setObject(newValue)
+    }
+     
+    const handleLevelChange = (e) =>{
+        let newValue = e.target.value
+        if (newValue < 0) {newValue = 0}    
+        if (newValue > 10) {newValue = 10}
+        setLevel(newValue)
+    }
 
 
     const handleLevelDown = () => {
@@ -46,10 +61,10 @@ export function Players({ name, setWinnerName }) {
     }
 
     const handleObjectDown = () => {
-        setObject(prevObject => prevObject - 1);
+        setObject(prevObject => prevObject <= - 40 ? -40 : prevObject - 1);
     }
     const handleObjectUp = () => {
-        setObject(prevObject => prevObject + 1);
+        setObject(prevObject => prevObject >= 99 ? 99 : prevObject + 1);
     }
 
 
@@ -58,15 +73,17 @@ export function Players({ name, setWinnerName }) {
         <div className=" flex justify-between p-[.6rem_2rem_.9rem] text-xl items-center hover:bg-[#0000002b] max-[665px]:h-[80px]">
             <h3 className=" max-[665px]:text-sm">{name}</h3>
             <aside className="flex justify-center items-center">
-                {initial && <div className="absolute bg-[rgba(0,0,0,0.36)] flex gap-3 items-center p-[1rem_5rem] rounded-xl backdrop-blur-md max-[665px]:p-[.7rem_3rem] max-[665px]:text-[18px] max-[665px]:translate-y-[-.7rem]">Items Iniciales:
-                    <form onSubmit={e => submitInitialObjects(e)} className="flex items-center">
-                        <input type="number" className="w-[45px] h-[45px] m-auto rounded-xl text-center border-none outline-none" />
-                        <button type="submit" className="ml-[2rem]"> Ready </button>
-                    </form>
-                </div>}
+                {initial &&
+                    <div className="absolute bg-[rgba(0,0,0,0.36)] flex gap-3 items-center p-[1rem_5rem] rounded-xl backdrop-blur-md max-[665px]:p-[.7rem_3rem] max-[665px]:text-[18px] max-[665px]:translate-y-[-.7rem]">Items Iniciales:
+                        <form onSubmit={e => submitInitialObjects(e)} className="flex items-center">
+                            <input type="number" min={0} max={99}onChange={e => e.target.value = Math.max(0, Math.min(99, parseInt(e.target.value)))} className="w-[45px] h-[45px] m-auto rounded-xl text-center border-none outline-none" />
+                            <button type="submit" className="ml-[2rem]"> Ready </button>
+                        </form>
+                    </div>
+                }
                 <div className="text-center flex items-center max-[665px]:w-[100px]">
                     <img src="level-logo.png" alt="Imagen que representa el nivel" className="h-[65px] p-1 m-auto max-[665px]:h-[35px] " />
-                    <p type="text" className="text-center rounded-xl w-[40px]" >{level}</p>
+                    <input type="number" className="text-center rounded-xl w-[40px]" value={level} onChange={handleLevelChange}/>
                     <div className="text-sm flex gap-0.5 flex-col-reverse ">
                         <button onClick={() => handleLevelDown()} className="max-[665px]:w-[20px] max-[665px]:h-[20px] max-[665px]:flex max-[665px]:items-center max-[665px]:justify-center">↓</button>
                         <button onClick={() => handleLevelUp()} className="max-[665px]:w-[20px] max-[665px]:h-[20px] max-[665px]:flex max-[665px]:items-center max-[665px]:justify-center">↑</button>
@@ -75,7 +92,7 @@ export function Players({ name, setWinnerName }) {
 
                 <div className="text-center flex items-center max-[665px]:w-[100px]">
                     <img src="mochila.png" alt="" className="h-[65px] p-1 m-auto max-[665px]:h-[35px]" />
-                    <p className="text-center rounded-xl w-[40px]">{object}</p>
+                    <input className="text-center rounded-xl w-[40px]" value={object} onChange={handleObjectChange}/>
                     <div className="text-sm flex flex-col-reverse gap-0.5">
                         <button onClick={() => handleObjectDown()} className="max-[665px]:w-[20px] max-[665px]:h-[20px] max-[665px]:flex max-[665px]:items-center max-[665px]:justify-center">↓</button>
                         <button onClick={() => handleObjectUp()} className="max-[665px]:w-[20px] max-[665px]:h-[20px] max-[665px]:flex max-[665px]:items-center max-[665px]:justify-center">↑</button>

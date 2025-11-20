@@ -9,7 +9,6 @@ export function CounterProvider ({children}) {
     const [Munchkin, setMunchkin] = useState('0')
     const [initialObject, setInitialObject] = useState(true)
 
-
     return (
         <CounterContext.Provider value={{
             Munchkin, setMunchkin, initialObject, setInitialObject

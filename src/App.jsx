@@ -17,7 +17,6 @@ function App() {
     setMunchkin(Munchkin === 0 ? 1 : 0)
     setInitialObject(true)
     setWinner(false)
-    console.log(Munchkin)
   }
 
   useEffect(() => {
@@ -51,6 +50,7 @@ function App() {
             <Players name={user.name} key={index} setWinner={setWinner} setWinnerName={setWinnerName} winner={winner}/>
           ))}
         </div>
+        {/* Este botón reestablece el juego*/}
         <button className=" absolute right-10 bottom-[-5rem] text-3xl max-[665px]:bottom-[20rem] max-[665px]:bg-[#1a1a1a38]" onClick={() => restartGame()}>⟲</button>
       </section>
     </div>
