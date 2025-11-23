@@ -88,7 +88,7 @@ Iterar rápidamente y mejorar la calidad del código en cada versión.
 
  Mejor estructura de carpetas
 
- Separación de lógica y UI
+{check} Separación de lógica y UI
 
  Accesibilidad mejorada
 
