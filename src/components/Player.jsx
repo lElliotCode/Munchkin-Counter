@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from "react"
 import confetti from "canvas-confetti"
 import { CounterContext } from "../context/counterContext"
 
-export function Players({ name, setWinnerName }) {
+export function Players({ name, gender, setWinnerName }) {
 
     const { Munchkin, setMunchkin, initialObject } = useContext(CounterContext);
 
@@ -34,21 +34,26 @@ export function Players({ name, setWinnerName }) {
             setMunchkin(10)
             setWinnerName(name)
         }
-        
+
         setTotal((parseInt(level) > 0 ? parseInt(level) : 1) + (parseInt(object) > 0 ? parseInt(object) : 0))
     }, [level, object])
 
-    const handleObjectChange = (e) =>{
+    const handleObjectChange = (e) => {
         let newValue = e.target.value
-        if (newValue < 0) {newValue = 0}    
-        if (newValue > 99) {newValue = 99}
+        if (newValue < 0) { newValue = 0 }
+        if (newValue > 99) { newValue = 99 }
         setObject(newValue)
     }
-     
-    const handleLevelChange = (e) =>{
+
+    const handleLevelChange = (e) => {
         let newValue = e.target.value
-        if (newValue < 0) {newValue = 0}    
-        if (newValue > 10) {newValue = 10}
+        if (newValue < 0) { newValue = 0 }
+        if (newValue > level + 1) {
+            alert("Un nivel a la vez, tramposo cara de verga")
+            return
+        }
+        if (newValue > 10) { newValue = 10 }
+        
         setLevel(newValue)
     }
 
@@ -57,7 +62,7 @@ export function Players({ name, setWinnerName }) {
         setLevel(prevLevel => (prevLevel === 1 ? 1 : prevLevel - 1))
     }
     const handleLevelUp = () => {
-        setLevel(prevLevel => (prevLevel === 10 ? 10 : prevLevel + 1));
+        setLevel(prevLevel => (prevLevel === 10 ? 10 : parseInt(prevLevel) + 1));
     }
 
     const handleObjectDown = () => {
@@ -70,32 +75,35 @@ export function Players({ name, setWinnerName }) {
 
 
     return (
-        <div className=" flex justify-between p-[.6rem_2rem_.9rem] text-xl items-center hover:bg-[#0000002b] max-[665px]:h-[80px]">
-            <h3 className=" max-[665px]:text-sm">{name}</h3>
+        <div className=" flex justify-between p-[.6rem_2rem_.9rem] gap-4 text-xl items-center hover:bg-[#0000002b] max-[665px]:h-[80px]">
+            <div className="flex flex-col gap-2 md:flex-row">
+                <span className={`border h-[30px] w-[30px] flex justify-center items-center rounded-full text-xs ${gender === 'Femenino' ? " border-pink-600  text-pink-300" : "border-blue-600 text-blue-300"}`} >{gender === 'Masculino' ? '♂' : '♀'}</span>
+                <h3 className=" max-[665px]:text-sm">{name}</h3>
+            </div>
             <aside className="flex justify-center items-center">
                 {initial &&
-                    <div className="absolute bg-[rgba(0,0,0,0.36)] flex gap-3 items-center p-[1rem_5rem] rounded-xl backdrop-blur-md max-[665px]:p-[.7rem_3rem] max-[665px]:text-[18px] max-[665px]:translate-y-[-.7rem]">Items Iniciales:
+                    <div className="absolute bg-[rgba(0,0,0,0.36)] flex gap-3 items-center p-[1rem_5rem] rounded-xl backdrop-blur-md max-[665px]:p-[.4rem_2rem] max-[665px]:text-[12px] max-[665px]:translate-y-[-.2rem] max-[665px]:w-[290px]">Items Iniciales:
                         <form onSubmit={e => submitInitialObjects(e)} className="flex items-center">
-                            <input type="number" min={0} max={99}onChange={e => e.target.value = Math.max(0, Math.min(99, parseInt(e.target.value)))} className="w-[45px] h-[45px] m-auto rounded-xl text-center border-none outline-none" />
-                            <button type="submit" className="ml-[2rem]"> Ready </button>
+                            <input type="number" min={0} max={99} onChange={e => e.target.value = Math.max(0, Math.min(99, parseInt(e.target.value)))} className="w-[45px] h-[45px] m-auto rounded-xl text-center border-none outline-none" />
+                            <button type="submit" className="ml-[.5rem]"> Ready </button>
                         </form>
                     </div>
                 }
                 <div className="text-center flex items-center max-[665px]:w-[100px]">
                     <img src="level-logo.png" alt="Imagen que representa el nivel" className="h-[65px] p-1 m-auto max-[665px]:h-[35px] " />
-                    <input type="number" className="text-center rounded-xl w-[40px]" value={level} onChange={handleLevelChange}/>
+                    <input type="number" className="text-center rounded-xl w-[40px]" min={1} max={10} value={level} onChange={handleLevelChange} />
                     <div className="text-sm flex gap-0.5 flex-col-reverse ">
-                        <button onClick={() => handleLevelDown()} className="max-[665px]:w-[20px] max-[665px]:h-[20px] max-[665px]:flex max-[665px]:items-center max-[665px]:justify-center">↓</button>
-                        <button onClick={() => handleLevelUp()} className="max-[665px]:w-[20px] max-[665px]:h-[20px] max-[665px]:flex max-[665px]:items-center max-[665px]:justify-center">↑</button>
+                        <button onClick={() => handleLevelDown()} disabled={Munchkin === 10} className="max-[665px]:w-[20px] max-[665px]:h-[20px] max-[665px]:flex max-[665px]:items-center max-[665px]:justify-center">↓</button>
+                        <button onClick={() => handleLevelUp()} disabled={Munchkin === 10} className="max-[665px]:w-[20px] max-[665px]:h-[20px] max-[665px]:flex max-[665px]:items-center max-[665px]:justify-center">↑</button>
                     </div>
                 </div>
 
                 <div className="text-center flex items-center max-[665px]:w-[100px]">
                     <img src="mochila.png" alt="" className="h-[65px] p-1 m-auto max-[665px]:h-[35px]" />
-                    <input className="text-center rounded-xl w-[40px]" value={object} onChange={handleObjectChange}/>
+                    <input className="text-center rounded-xl w-[40px]" type="number" value={object} onChange={handleObjectChange} />
                     <div className="text-sm flex flex-col-reverse gap-0.5">
-                        <button onClick={() => handleObjectDown()} className="max-[665px]:w-[20px] max-[665px]:h-[20px] max-[665px]:flex max-[665px]:items-center max-[665px]:justify-center">↓</button>
-                        <button onClick={() => handleObjectUp()} className="max-[665px]:w-[20px] max-[665px]:h-[20px] max-[665px]:flex max-[665px]:items-center max-[665px]:justify-center">↑</button>
+                        <button onClick={() => handleObjectDown()} disabled={Munchkin === 10} className="max-[665px]:w-[20px] max-[665px]:h-[20px] max-[665px]:flex max-[665px]:items-center max-[665px]:justify-center">↓</button>
+                        <button onClick={() => handleObjectUp()} disabled={Munchkin === 10} className="max-[665px]:w-[20px] max-[665px]:h-[20px] max-[665px]:flex max-[665px]:items-center max-[665px]:justify-center">↑</button>
                     </div>
                 </div>
                 <div className="text-center flex items-center max-[665px]:w-[100px] justify-center">

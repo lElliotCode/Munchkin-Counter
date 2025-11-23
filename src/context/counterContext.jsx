@@ -8,10 +8,11 @@ export function CounterProvider ({children}) {
 
     const [Munchkin, setMunchkin] = useState('0')
     const [initialObject, setInitialObject] = useState(true)
+    const [players, setPlayers] = useState([])
 
     return (
         <CounterContext.Provider value={{
-            Munchkin, setMunchkin, initialObject, setInitialObject
+            Munchkin, setMunchkin, initialObject, setInitialObject, players, setPlayers
         }}>
             {children}
         </CounterContext.Provider>
